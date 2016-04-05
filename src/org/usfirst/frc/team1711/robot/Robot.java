@@ -2,7 +2,7 @@ package org.usfirst.frc.team1711.robot;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1711.vision.VisionSystem;
+import org.usfirst.frc.team1711.vision.VisionSystem2;
 
 import edu.wpi.first.wpilibj.CameraServer;
 
@@ -30,13 +30,8 @@ public class Robot extends SampleRobot
     Joystick shooterStick;
     Shooter shooter;
     Drive drive;
-<<<<<<< HEAD
     Winch winch;
-
-//	VisionSystem vision;
-=======
->>>>>>> 1202dcec29b8fd5ef14a4d4519365b8f31bf98b5
-    VisionSystem vision;
+    VisionSystem2 vision;
     AnalogPotentiometer autonPot;
     
 
@@ -66,30 +61,15 @@ public class Robot extends SampleRobot
     	//Instances of various classes
         shooter = new Shooter();
         drive = new Drive();
-<<<<<<< HEAD
         winch = new Winch();
         
         // create the vision system which executes on its own 
         // thread
-
-       // vision=new VisionSystem();
-       // vision.init();
-
-//        vision = new VisionSystem();
-//        vision = new VisionSystem();
-        //vision.init();
-
-        autoSelected = (String) chooser.getSelected();
-//		autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
-	
-=======
-        vision = new VisionSystem();
+        vision = new VisionSystem2();
         
         //Initialize the vision system *NEEDS WORK*
         vision.init();
         shooter.cameraCenter();
->>>>>>> 1202dcec29b8fd5ef14a4d4519365b8f31bf98b5
     }
     
 	/**
@@ -150,7 +130,7 @@ public class Robot extends SampleRobot
     		{
     			while (!isDone) 
     			{
-    				vision.cameraSend();
+    				vision.vision();
     			}
     		}
     	};
@@ -176,8 +156,9 @@ public class Robot extends SampleRobot
         //Stops motors and vision loop when robot is disabled
         isDone = true;
         drive.stopMotors();
+    	}
     }
-    
+    	
     public void testPeriodic() 
     {
  
