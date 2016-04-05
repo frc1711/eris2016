@@ -32,9 +32,16 @@ public class VisionSystem2
 		//I don't know what this does
 		NIVision.IMAQdxConfigureGrab(session);
 			
-		//Initialize servo objects *MAKE SURE YOU ADD THE -1 CHECKS IF THIS GETS IMPLIEMNTED*
-		angleServo = new Servo(0); //ADD IN ROBOTMAP IF IMPLIMENTED
-		tiltServo = new Servo(0); //ADD IN ROBOTMAP IF IMPLIEMNTED
+		//Initialize servo objects if they exist
+		if(RobotMap.shooterAngleServo != -1)
+		{
+			angleServo = new Servo(RobotMap.shooterAngleServo); 
+		}
+		
+		if(RobotMap.shooterTiltServo != -1)
+		{
+			tiltServo = new Servo(RobotMap.shooterTiltServo); 
+		}
 	}
 	
 	//CENTER ANGLE SERVO
