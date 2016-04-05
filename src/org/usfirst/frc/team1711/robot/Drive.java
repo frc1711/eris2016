@@ -94,10 +94,21 @@ public class Drive {
 	
 	public void DriveArcade(final Joystick driveStick)
 	{
-		motorDriveLeftMaster.set(-(driveStick.getY()-driveStick.getX()));
-		motorDriveRightMaster.set(-(driveStick.getY()+driveStick.getX()));
+		if(driveStick.getRawButton(RobotMap.driveStickBtnSlow))
+		{
+			motorDriveLeftMaster.set(0.5*(-(driveStick.getY()-driveStick.getX())));
+			motorDriveRightMaster.set(0.5*(-(driveStick.getY()+driveStick.getX())));
 
-        Timer.delay(0.005);		// wait for a motor update time
+	        Timer.delay(0.005);		// wait for a motor update time
+		}
+		else
+		{
+			motorDriveLeftMaster.set(-(driveStick.getY()-driveStick.getX()));
+			motorDriveRightMaster.set(-(driveStick.getY()+driveStick.getX()));
+
+	        Timer.delay(0.005);		// wait for a motor update time
+		}
+		
 	}
 
 	public void driveForward(final double powerLevel, double time, final double leftConstant, final double rightConstant) 
