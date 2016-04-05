@@ -313,7 +313,34 @@ public class Shooter
 		motorShooterPitchLeft.set(0);
 	}
 
-	public void pitchControl(Joystick shooterStick) 
+	public void pitchControl(Joystick shooterStick)
+	{
+		if(pot!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null) 
+		{
+			if(pot.get()<potHighest) {			// tested value for topmost
+				motorShooterPitchLeft.set(0);
+				motorShooterPitchRight.set(0);// upper limit hit, stop move
+				atMax=true;
+				atMin = false;
+				System.out.println("At max");
+				
+			}
+			if(pot.get()>potLowest) {			// tested value for bottommost
+				motorShooterPitchLeft.set(0);
+				motorShooterPitchRight.set(0); // lower limit hit, stop move
+				atMin=true;
+				atMax = false;
+				System.out.println("At min");
+			}		
+		}
+		
+		if(Math.abs(shooterStick.getRawAxis(1)) < .08)
+		{
+			motorShooterPitchLeft.set(shooterStick.getRawAxis(1));
+			motorShooterPitchRight.set(shooterStick.getRawAxis(1));
+		}
+	}
+	public void pitchControll(Joystick shooterStick) 
 	//this controls the raising and lowering of the shooter
 	{		
 		//NEVER TAKE THIS OUT EVER

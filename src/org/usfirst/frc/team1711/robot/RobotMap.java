@@ -61,8 +61,6 @@ public class RobotMap
 	//drive button definitions
 	public static final int driverStickBtnEncoderPulse=8;
 	public static final int driveStickBtnSlow=1;
-	public static final int driveStickBtnPneumaticsExtend=2;
-	public static final int driveStickBtnPneumaticsRetract=3;
 
 	// shooter joystick button definitions
 	public static final int shooterStickBtnShoot=3;	// on xbox controller, this is the right back trigger

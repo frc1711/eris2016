@@ -33,7 +33,7 @@ public class Winch {
 		if(stick.getRawAxis(RobotMap.shooterStickBtnShoot)>0.8) {
 			
 			// get the current position of the winch stick
-			double power=stick.getRawAxis(RobotMap.shooterStickStickWinch);
+			double power=stick.getRawAxis(5);
 
 			// we can only retract if bidirectional allowed
 			if (bidirectional==true) {
