@@ -12,7 +12,7 @@ public class Winch {
 	Servo hookServo;
 	boolean hookReleased=false;
 	boolean bidirectional=false;
-	long timerStart=0;
+	double liftAccumulator=0;
 	Date date=new Date();
 	
 	public Winch() {
@@ -25,7 +25,7 @@ public class Winch {
 		// reset all the conditional flags
 		hookReleased=false;
 		bidirectional=false;
-		timerStart=0;
+		liftAccumulator=0;
 	}
 	
 	public void winchControl(Joystick stick) {
@@ -50,13 +50,11 @@ public class Winch {
 					} catch(Exception e) {}
 				} 
 
-				// if timerStart=0, then get the current millseconds
-				if(timerStart==0)
-					timerStart=date.getTime();
-				else
-					if(date.getTime()-timerStart>1000)
-						bidirectional=true;
+				// increment the liftAccumulator by the power level
+				liftAccumulator+=power;
 				
+				if(liftAccumulator>10)
+					bidirectional=true;
 				
 				// set the motor power
 				frontCIM.set(power);
