@@ -35,6 +35,13 @@ public class Winch {
 			// get the current position of the winch stick
 			double power=stick.getRawAxis(RobotMap.shooterStickStickWinch);
 
+			// we can only retract if bidirectional allowed
+			if (bidirectional==true) {
+				// set the motor power
+				frontCIM.set(power);
+				rearCIM.set(power);
+			}
+			
 			// to save accidently retracting the tape into the machine, it will only
 			// be possible to pay it out for one second before being able to retract
 			if(bidirectional==false && power>0) {
@@ -52,17 +59,12 @@ public class Winch {
 
 				// increment the liftAccumulator by the power level
 				liftAccumulator+=power;
-				
+			
+				// if we have delivered the required amount of power to the winch, we
+				// can now allow it to be retracted
 				if(liftAccumulator>10)
 					bidirectional=true;
 				
-				// set the motor power
-				frontCIM.set(power);
-				rearCIM.set(power);
-			}
-
-			// we can only retract if bidirectional allowed
-			if (bidirectional==true) {
 				// set the motor power
 				frontCIM.set(power);
 				rearCIM.set(power);
