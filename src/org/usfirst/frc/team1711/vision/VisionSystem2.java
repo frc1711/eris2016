@@ -74,7 +74,8 @@ public class VisionSystem2
 	{
 		//Sets the tilt camera to the same angle as the shooter
 		//Alternatively, we could use a scaling factor -- it needs testing to determine which is better
-		tiltServo.set(+RobotMap.shooterServoCorrection);
+		//3.003 = .333 (range of pot) * 100 (tiltServo.set takes a number between 0 and 1)
+		tiltServo.set(potAngle*3.003+RobotMap.shooterServoCorrection);
 	}
 		
 	public void throttleTilt(Joystick shooterStick)
