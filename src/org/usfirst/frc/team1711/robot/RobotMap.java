@@ -91,6 +91,9 @@ public class RobotMap
 	
 	//vision system enable
 	public static final int visionSystemEnable = 1;
+	
+	//vision system camera bias
+	public static final double shooterServoCorrection = 0;
 
 	public RobotMap() 
 	{

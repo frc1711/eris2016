@@ -36,7 +36,9 @@ public class VisionSystem2
 		angleServo = new Servo(0); //ADD IN ROBOTMAP IF IMPLIMENTED
 		tiltServo = new Servo(0); //ADD IN ROBOTMAP IF IMPLIEMNTED
 	}
-		
+	
+	//CENTER ANGLE SERVO
+	
 	public void vision() 
 	{
 		//Sends the frames from the camera to the server, which is then displayed on the dashboard
@@ -68,11 +70,11 @@ public class VisionSystem2
 		}
 	}
 		
-	public void shooterTrack(double potAngle, double correction) //Correction should be set in RobotMap
+	public void shooterTrack(double potAngle) //Correction should be set in RobotMap
 	{
 		//Sets the tilt camera to the same angle as the shooter
 		//Alternatively, we could use a scaling factor -- it needs testing to determine which is better
-		tiltServo.set(potAngle+correction);
+		tiltServo.set(+RobotMap.shooterServoCorrection);
 	}
 		
 	public void throttleTilt(Joystick shooterStick)
