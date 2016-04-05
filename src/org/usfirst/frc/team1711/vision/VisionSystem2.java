@@ -77,14 +77,7 @@ public class VisionSystem2
 		}
 	}
 		
-	public void shooterTrack(double potAngle) //Correction should be set in RobotMap
-	{
-		//Sets the tilt camera to the same angle as the shooter
-		//Alternatively, we could use a scaling factor -- it needs testing to determine which is better
-		//3.003 = .333 (range of pot) * 100 (tiltServo.set takes a number between 0 and 1)
-		tiltServo.set(potAngle*3.003+RobotMap.shooterServoCorrection);
-	}
-		
+
 	public void throttleTilt(Joystick shooterStick)
 	{
 		//Tilts the camera via absolute control on the throttle

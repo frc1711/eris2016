@@ -21,7 +21,7 @@ public class Shooter
 	
 	Servo motorShooterKicker;
 	Servo motorCameraAngle;
-	Servo motorCameraTilt;
+	Servo tiltServo;
 	Talon motorShooterPitchLeft;
 	Talon motorShooterPitchRight;
 	Talon motorShooterLeft;
@@ -52,7 +52,7 @@ public class Shooter
 		
 		if(RobotMap.motorCameraTilt != -1)
 		{
-			motorCameraTilt = new Servo(RobotMap.motorCameraTilt);
+			tiltServo = new Servo(RobotMap.motorCameraTilt);
 		}
 		
 		//Creating Talon objects
@@ -166,21 +166,7 @@ public class Shooter
 				motorCameraAngle.setAngle(90);
 			}
 		}
-		
-		if(motorCameraTilt != null && pot != null)
-		{
-			//this is unfinished
-			//throttle control on the shooter joystick should control the tilt of the camera
-			//and it should move with the shooter
-			double shooterTilt = pot.get();
-			double cameraTilt = motorCameraTilt.get();
-			
-			//use this line to test the servo readings 
-			System.out.println(motorCameraTilt.get());
-		}
-		
-	} 
-
+	}
 	public void collectorControl(Joystick shooterStick) 
 	//controls the intake of the ball
 	{
@@ -338,73 +324,19 @@ public class Shooter
 		{
 			motorShooterPitchLeft.set(shooterStick.getRawAxis(1));
 			motorShooterPitchRight.set(shooterStick.getRawAxis(1));
+		} 		
+	}
+	
+	public void shooterTrack() //Correction should be set in RobotMap
+	{
+		if(RobotMap.shooterPot != -1)
+		{
+			//Sets the tilt camera to the same angle as the shooter
+			//Alternatively, we could use a scaling factor -- it needs testing to determine which is better
+			//3.003 = .333 (range of pot) * 100 (tiltServo.set takes a number between 0 and 1)
+			double potAngle = pot.get();
+			tiltServo.set(potAngle*3.003+RobotMap.shooterServoCorrection);
 		}
 	}
-	public void pitchControll(Joystick shooterStick) 
-	//this controls the raising and lowering of the shooter
-	{		
-		//NEVER TAKE THIS OUT EVER
-		//NEVER
-		//System.out.println(pot.get());
 		
-		// use the potentiometer to measure angle of shooter (if it exists)
-	//	System.out.println(pot.get());
-		if(pot!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null) 
-		{
-			if(pot.get()<potHighest) {			// tested value for topmost
-				motorShooterPitchLeft.set(0);
-				motorShooterPitchRight.set(0);// upper limit hit, stop move
-				atMax=true;
-				atMin = false;
-				System.out.println("At max");
-				
-			}
-			if(pot.get()>potLowest) {			// tested value for bottommost
-				motorShooterPitchLeft.set(0);
-				motorShooterPitchRight.set(0); // lower limit hit, stop move
-				atMin=true;
-				atMax = false;
-				System.out.println("At min");
-			}		
-		}
-		if(shooterStick!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null)
-		{
-			// detect jog up if not at max
-			if(!atMax) 
-			{
-				if(shooterStick.getRawButton(RobotMap.shooterStickBtnJogUp)) {
-					motorShooterPitchLeft.set(1);
-					motorShooterPitchRight.set(1);
-					atMin=false;
-					lastJogButton=RobotMap.shooterStickBtnJogUp;
-				}
-				
-				else if(lastJogButton==RobotMap.shooterStickBtnJogUp) {
-					motorShooterPitchLeft.set(0);
-					motorShooterPitchRight.set(0);
-					lastJogButton=0;
-				}
-			}
-			else
-				lastJogButton=0;
-			
-			// detect jog down if not at min
-			if(!atMin) {
-				if(shooterStick.getRawButton(RobotMap.shooterStickBtnJogDown)) {
-					motorShooterPitchLeft.set(-1);
-					motorShooterPitchRight.set(-1);
-					atMax=false;
-					lastJogButton=RobotMap.shooterStickBtnJogDown;
-				}
-				else if(lastJogButton==RobotMap.shooterStickBtnJogDown) {
-					motorShooterPitchLeft.set(0);
-					motorShooterPitchRight.set(0);
-					lastJogButton=0;
-				}
-			}
-			else
-				lastJogButton=0;
-		}
-		
-	}
 }

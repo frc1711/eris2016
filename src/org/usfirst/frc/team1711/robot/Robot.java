@@ -148,6 +148,7 @@ public class Robot extends SampleRobot
 			shooter.fireControl(shooterStick);
 	    	shooter.collectorControl(shooterStick);
 	    	shooter.cameraAngle(shooterStick);
+	    	shooter.shooterTrack();
 	    	
 	    	// manual winch operations
 	    	winch.winchControl(shooterStick);
