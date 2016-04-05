@@ -115,6 +115,8 @@ public class Robot extends SampleRobot
     	
     	//Drive the robot forward, which includes a timer
     	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);
+    	
+    	System.out.println("padawan");
  
     }  
 
