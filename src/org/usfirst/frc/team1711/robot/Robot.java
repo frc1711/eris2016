@@ -34,6 +34,7 @@ public class Robot extends SampleRobot
     VisionSystem2 vision;
     AnalogPotentiometer autonPot;
     
+    boolean driveAuton = true;
 
 
     /**
@@ -88,36 +89,41 @@ public class Robot extends SampleRobot
 
     public void autonomous() 
     {	
-    	//Sets a default power level thats defined in RobotMap
-    	autonPower = RobotMap.autonDefaultPowerLevel;
-    	
-    	//If the potentiometer is set to 1, use the highest power level
-    	if (autonPot.get() > .5) 
+    	if(driveAuton = true)
     	{
-    		autonPower = RobotMap.autonHighPowerLevel;
+    		//Sets a default power level thats defined in RobotMap
+	    	autonPower = RobotMap.autonDefaultPowerLevel;
+	    	
+	    	//If the potentiometer is set to 1, use the highest power level
+	    	if (autonPot.get() > .5) 
+	    	{
+	    		autonPower = RobotMap.autonHighPowerLevel;
+	    	}
+	    	//If the potentiometer is set to 0, use the lower power level
+	    	if (autonPot.get() < .5) 
+	    	{
+	    		autonPower = RobotMap.autonLowPowerLevel;
+	    	} 
+	    	
+	    	//Lower the shooter, wait for 1 second, then start moving
+	    	shooter.lowerPitch();
+	    	try
+	    	{
+	    		Thread.sleep(1000);
+			} 
+	    	catch (InterruptedException e) 
+	    	{
+				e.printStackTrace();
+			}
+	    	
+	    	//Drive the robot forward, which includes a timer
+	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);   	
     	}
-    	//If the potentiometer is set to 0, use the lower power level
-    	if (autonPot.get() < .5) 
-    	{
-    		autonPower = RobotMap.autonLowPowerLevel;
-    	} 
     	
-    	//Lower the shooter, wait for 1 second, then start moving
-    	shooter.lowerPitch();
-    	try
+    	if(driveAuton = false)
     	{
-    		Thread.sleep(1000);
-		} 
-    	catch (InterruptedException e) 
-    	{
-			e.printStackTrace();
-		}
-    	
-    	//Drive the robot forward, which includes a timer
-    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);
-    	
-    	System.out.println("padawan");
- 
+    		
+    	}
     }  
 
     public void operatorControl() 
