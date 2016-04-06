@@ -14,11 +14,13 @@ public class Winch {
 	boolean bidirectional=false;
 	double liftAccumulator=0;
 	Date date=new Date();
+	Joystick shooterStick;
 	
 	public Winch() {
 		frontCIM=new Jaguar(RobotMap.motorWinchFront);
 		rearCIM=new Jaguar(RobotMap.motorWinchRear);
 		hookServo=new Servo(RobotMap.servoWinchHook);
+		shooterStick = new Joystick(RobotMap.joystick1);
 	}
 
 	public void init() {
@@ -28,12 +30,12 @@ public class Winch {
 		liftAccumulator=0;
 	}
 	
-	public void winchControl(Joystick stick) {
+	public void winchControl(Joystick shooterStick) {
 		// can only use the winch when the left hand trigger is pressed
-		if(stick.getRawAxis(RobotMap.shooterStickBtnShoot)>0.8) {
+		if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot)>0.8) {
 			
 			// get the current position of the winch stick
-			double power=stick.getRawAxis(5);
+			double power=shooterStick.getRawAxis(5);
 
 			// we can only retract if bidirectional allowed
 			if (bidirectional==true) {

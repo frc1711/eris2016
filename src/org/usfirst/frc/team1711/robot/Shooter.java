@@ -329,7 +329,7 @@ public class Shooter
 	
 	public void shooterTrack() //Correction should be set in RobotMap
 	{
-		if(RobotMap.shooterPot != -1)
+		if(RobotMap.shooterPot != -1 && RobotMap.motorCameraTilt != -1)
 		{
 			//Sets the tilt camera to the same angle as the shooter
 			//Alternatively, we could use a scaling factor -- it needs testing to determine which is better
@@ -337,6 +337,34 @@ public class Shooter
 			double potAngle = pot.get();
 			tiltServo.set(potAngle*3.003+RobotMap.shooterServoCorrection);
 		}
+	}
+	
+	//shoots the ball in autonomous
+	public void shoot()
+	{
+		Thread thread = new Thread() {
+		    public void run() {			    
+		    	try {
+			    	double initialSpeed=0.3;	// initial wheel speed
+			    	double shootSpeed=0.8;		// shooting speed
+			    	motorShooterLeft.set(-initialSpeed);
+			    	motorShooterRight.set(-initialSpeed);
+				    sleep(750); 				// wait half second to get up to speed
+				    motorShooterLeft.set(-shootSpeed);
+				    motorShooterRight.set(-shootSpeed);
+					sleep(750);					// start to spin-up
+					motorShooterKicker.setAngle(0);	// SHOOT
+					// wait for ball release
+					sleep(1000);
+					motorShooterKicker.setAngle(90);	// retract the kicker
+
+					// shut down the motors
+			    	motorShooterLeft.set(0);
+			    	motorShooterRight.set(0);			
+			    } catch(InterruptedException ie) {}
+		    }
+		};
+	    thread.start();
 	}
 		
 }

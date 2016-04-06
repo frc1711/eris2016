@@ -72,11 +72,6 @@ public class RobotMap
 	public static final int shooterStickBtnJogDown=6;
 	public static final int shooterStickBtnShooterCollect=1;
  
-	// manipulator joystick button definitions
-	//public static final int manipulatorStickBtnBothArms=1;
-	//public static final int manipulatorStickBtnBottomArm=2;
-	//public static final int manipulatorStickBtnTopArm=3;
-	
 	public static final int motorCameraTilt = 6;
 	
 	//Autonomous constants
@@ -88,14 +83,14 @@ public class RobotMap
 	public static final double autonRunTime = 3;
 	
 	//vision system enable
-	public static final int visionSystemEnable = 1;
+	public static final int visionSystemEnable = -1;
 	
 	//vision system camera bias
 	public static final double shooterServoCorrection = 0;
 	
 	//vision servo camera controls
-	public static final int shooterTiltServo = 0;
-	public static final int shooterAngleServo = 0;
+	//public static final int shooterTiltServo = 0;
+	//public static final int shooterAngleServo = 0;
 
 	public RobotMap() 
 	{
