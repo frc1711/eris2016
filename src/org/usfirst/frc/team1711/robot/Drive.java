@@ -191,10 +191,7 @@ public class Drive {
 				//I changed the power levels, but we need to test to see if it really goes "right" or "left" where labeled
 				public void run()
 				{
-					//initializing, or, 'resetting' to zero
-						gyroFlat.initGyro();
-						gyroFlat.calibrate();
-		
+					gyroFlat.reset();
 					//finding the fastest way to turn to get to the desired angle
 					//if angle is less than 180 turn right
 					if(desiredAngle < 180)
@@ -239,7 +236,7 @@ public class Drive {
 			gyroFlat.calibrate();
 		}
 	}
-	public void driveGyro()
+	public void driveGyro(double distance)
 	//call continuously during auton 
 	{
 		if(gyroFlat != null) 

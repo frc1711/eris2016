@@ -45,7 +45,10 @@ public class RobotMap
 	
 	//Shooter components
 	public static final int shooterPot = 0;
+	
+	//switches for auton
 	public static final int autonPot = 3;
+	public static final int autonSwitch = 9;
 
 	//Gyro inputs
 	public static final int gyroFlat = 1;

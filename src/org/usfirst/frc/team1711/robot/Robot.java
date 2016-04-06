@@ -3,6 +3,7 @@ package org.usfirst.frc.team1711.robot;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team1711.vision.VisionSystem2;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.wpilibj.CameraServer;
 
@@ -33,6 +34,7 @@ public class Robot extends SampleRobot
     Winch winch;
     VisionSystem2 vision;
     AnalogPotentiometer autonPot;
+    DigitalInput autonSwitch;
     
     boolean driveAuton = true;
 
@@ -59,6 +61,11 @@ public class Robot extends SampleRobot
             autonPot = new AnalogPotentiometer(RobotMap.autonPot);
     	}
     	
+    	if(RobotMap.autonSwitch != -1)
+    	{
+    		autonSwitch = new DigitalInput(RobotMap.autonSwitch);
+    	}
+    	
     	//Instances of various classes
         shooter = new Shooter();
         drive = new Drive();
@@ -71,6 +78,7 @@ public class Robot extends SampleRobot
         //Initialize the vision system *NEEDS WORK*
         vision.init();
         shooter.cameraCenter();
+        drive.gyroInit();
     }
     
 	/**
@@ -89,7 +97,8 @@ public class Robot extends SampleRobot
 
     public void autonomous() 
     {	
-    	if(driveAuton = true)
+    	
+    	if(autonSwitch.get() == true)
     	{
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
@@ -120,7 +129,7 @@ public class Robot extends SampleRobot
 	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);   	
     	}
     	
-    	if(driveAuton = false)
+    	if(autonSwitch.get() == false)
     	{
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
@@ -202,7 +211,7 @@ public class Robot extends SampleRobot
     	
     public void testPeriodic() 
     {
- 
+    	System.out.println(autonSwitch.get());
     }
     
 }
