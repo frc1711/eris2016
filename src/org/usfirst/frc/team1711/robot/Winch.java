@@ -34,11 +34,18 @@ public class Winch {
 	{
 		double power = 0;
 		// can only use the winch when the left hand trigger is pressed
-		if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot)>0.8) {
+		if(shooterStick.getRawAxis(2)>0.8) {
 			
 			// get the current position of the winch stick
 			if(Math.abs(shooterStick.getRawAxis(5)) > .2)
 			{
+				hookServo.setAngle(180);
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				power= (-.75)*(shooterStick.getRawAxis(5));
 			}
 			else

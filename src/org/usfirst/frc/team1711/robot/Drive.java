@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.PIDController;
 
 public class Drive {
 	
@@ -29,11 +29,22 @@ public class Drive {
 	
 	//creating gyro
 	AnalogGyro gyroFlat;
+	PIDController PIDLeft;
+	PIDController PIDRight;
 	
 	//creating joystick
 	Joystick driveStick = new Joystick(RobotMap.joystick0);
+	
 
 	public Drive() {
+
+		//PID control for the gyro
+		double Kp = .1;
+		double Ki = 0;
+		double Kd = 0;
+		
+		PIDController PIDLeft = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveLeftMaster);
+		PIDController PIDRight = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveRightMaster);
 		
 		//creating master objects
 		motorDriveLeftMaster = new CANTalon(RobotMap.motorDriveLeftMasterId);
@@ -241,12 +252,56 @@ public class Drive {
 	{
 		if(gyroFlat != null) 
 		{
-			double angle = gyroFlat.getAngle();
 			double Kp = 0.03;
-			double turnRate = -angle * Kp;
-			driveSystem.drive(-1.0, turnRate);
+			double distanceTraveled = ((encoderLeft.getDistance() + encoderRight.getDistance()) / 2);
+			
+			while(distanceTraveled < distance)
+			{
+				double angle = gyroFlat.getAngle();
+				double turnRate = -angle * Kp;
+				driveSystem.drive(-1.0, turnRate);
+			}
 		}
 	}
+	
+	public void arcadeGyro(Joystick driveStick)
+	{
+		double error = 0;
+		double targetRotation;
+		double targetDirection;
+		double targetMagnitude;
+		double currentAngle;
+		double directionError;
+		double currentRotation;
+		double rotationError;
+		boolean gyroMode = false;
+		
+		
+		if(driveStick.getRawButton(RobotMap.driveStickBtnGyro))
+		{
+			gyroMode = true;
+		}				
+		while(gyroMode == true)
+		{
+			PIDLeft.enable();
+			PIDRight.enable();
+			
+			targetRotation = driveStick.getX();
+			targetDirection = driveStick.getDirectionDegrees();
+			targetMagnitude = driveStick.getMagnitude();
+			currentAngle = gyroFlat.getAngle();
+			currentRotation = gyroFlat.getRate();
+			
+			directionError = targetDirection - currentAngle;
+			
+			//set the power proportional to the direction and magnitude
+			//set the right and left wheels to turn based on this proportion
+			//what should the setpoint be?????????
+			
+			//PIDLeft.setSetpoint();
+		}
+	}
+	
 	public void driveGyroZ(final double minDistance, final double powerLevel, final double distance, double leftConstant, double rightConstant){
 		//this method sets the drive to be controlled by the gyro
 		//and to be controlled by a minimum distance
