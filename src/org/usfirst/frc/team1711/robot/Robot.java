@@ -71,13 +71,17 @@ public class Robot extends SampleRobot
         drive = new Drive();
         winch = new Winch();
         
-        // create the vision system which executes on its own 
-        // thread
-        vision = new VisionSystem2();
+    	winch.init();
         
-        //Initialize the vision system *NEEDS WORK*
-        vision.init();
-        shooter.cameraCenter();
+        
+        if(RobotMap.visionSystemEnable != -1)
+        {
+        	// create the vision system which executes on its own 
+            // thread
+            vision = new VisionSystem2();
+        	//Initialize the vision system *NEEDS WORK*
+            vision.init();
+        }
         drive.gyroInit();
     }
     
@@ -170,7 +174,6 @@ public class Robot extends SampleRobot
     public void operatorControl() 
     {
     	isDone = false;
-    	winch.init();
     	
     	//Begin vision processing on a new thread
     	Thread thread = new Thread() 
@@ -179,7 +182,10 @@ public class Robot extends SampleRobot
     		{
     			while (!isDone) 
     			{
-    				vision.vision();
+    				if(RobotMap.visionSystemEnable != -1)
+    				{
+        				vision.vision();
+    				}
     			}
     		}
     	};
@@ -198,7 +204,7 @@ public class Robot extends SampleRobot
 	    	shooter.shooterTrack();
 	    	
 	    	// manual winch operations
-	    	winch.winchControl(shooterStick);
+	    	winch.testWinch(shooterStick);
 	    	
 	    	// manual drive operations 
 	    	drive.DriveArcade(driveStick);

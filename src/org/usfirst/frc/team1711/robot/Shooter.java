@@ -133,17 +133,6 @@ public class Shooter
 		}
 	}
 	
-	public void cameraCenter() 
-	//centers the camera on the rotating mount in the x-y direction
-	//called when the robot is initialized
-	{
-		if(motorCameraAngle != null)
-		{
-			motorCameraAngle.setAngle(80);
-			System.out.println("set");
-		}
-	}
-	
 	public void cameraAngle (final Joystick shooterStick) 
 	//controls the angle and tilt of the camera mount
 	{
@@ -320,16 +309,22 @@ public class Shooter
 			}		
 		}
 		
-		if(Math.abs(shooterStick.getRawAxis(1)) < .08)
+		System.out.println("right " + motorShooterPitchRight.get());
+		System.out.println("left " + motorShooterPitchLeft.get());
+		
+		while(Math.abs(shooterStick.getRawAxis(1)) > .2)
 		{
 			motorShooterPitchLeft.set(shooterStick.getRawAxis(1));
 			motorShooterPitchRight.set(shooterStick.getRawAxis(1));
-		} 		
+		}
+		
+			motorShooterPitchLeft.set(0);
+			motorShooterPitchRight.set(0);
 	}
 	
 	public void shooterTrack() //Correction should be set in RobotMap
 	{
-		if(RobotMap.shooterPot != -1 && RobotMap.motorCameraTilt != -1)
+		if(RobotMap.shooterPot != -1 && RobotMap.shooterTiltServo != -1)
 		{
 			//Sets the tilt camera to the same angle as the shooter
 			//Alternatively, we could use a scaling factor -- it needs testing to determine which is better

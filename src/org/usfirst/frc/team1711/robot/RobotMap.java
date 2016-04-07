@@ -92,8 +92,8 @@ public class RobotMap
 	public static final double shooterServoCorrection = 0;
 	
 	//vision servo camera controls
-	//public static final int shooterTiltServo = 0;
-	//public static final int shooterAngleServo = 0;
+	public static final int shooterTiltServo = -1;
+	public static final int shooterAngleServo = -1;
 
 	public RobotMap() 
 	{
