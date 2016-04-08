@@ -101,9 +101,10 @@ public class Robot extends SampleRobot
 
     public void autonomous() 
     {	
-    	
     	if(autonSwitch.get() == true)
     	{
+    		
+    		/*
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
 	    	
@@ -130,11 +131,27 @@ public class Robot extends SampleRobot
 			}
 	    	
 	    	//Drive the robot forward, which includes a timer
+	    	 * 
+	    	 */
+    		
+    		//Lower the shooter, wait for 1 second, then start moving
+	    	shooter.lowerPitch();
+	    	try
+	    	{
+	    		Thread.sleep(1000);
+			} 
+	    	catch (InterruptedException e) 
+	    	{
+				e.printStackTrace();
+			}
+    		autonPower = RobotMap.autonHighPowerLevel;
 	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);   	
     	}
     	
     	if(autonSwitch.get() == false)
     	{
+    		
+    		/*
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
 	    	
@@ -168,13 +185,28 @@ public class Robot extends SampleRobot
 	    	shooter.partialLift(.660);
 	    	//shoot the ball
 	    	shooter.shoot();
+	    	
+	    	*/
+    		
+    		//Lower the shooter, wait for 1 second, then start moving
+	    	shooter.lowerPitch();
+	    	try
+	    	{
+	    		Thread.sleep(1000);
+			} 
+	    	catch (InterruptedException e)
+	    	{
+				e.printStackTrace();
+			}
+    		autonPower = RobotMap.autonLowPowerLevel;
+	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);  
     	}
     }  
 
     public void operatorControl() 
     {
+    	winch.zeroServo();
     	isDone = false;
-    	
     	//Begin vision processing on a new thread
     	Thread thread = new Thread() 
     	{
@@ -198,10 +230,12 @@ public class Robot extends SampleRobot
         {
         	// manual shooter operations
 	    	shooter.pitchControl(shooterStick);
-			shooter.fireControl(shooterStick);
+			shooter.shootControl(shooterStick);
 	    	shooter.collectorControl(shooterStick);
 	    	shooter.cameraAngle(shooterStick);
 	    	shooter.shooterTrack();
+	    	shooter.cameraMove(shooterStick);
+	    	
 	    	
 	    	// manual winch operations
 	    	winch.testWinch(shooterStick);

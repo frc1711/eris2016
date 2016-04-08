@@ -30,6 +30,10 @@ public class Winch {
 		liftAccumulator=0;
 	}
 	
+	public void zeroServo()
+	{
+		hookServo.setAngle(0);
+	}
 	public void testWinch(Joystick shooterStick)
 	{
 		double power = 0;
@@ -37,15 +41,18 @@ public class Winch {
 		if(shooterStick.getRawAxis(2)>0.8) {
 			
 			// get the current position of the winch stick
-			if(Math.abs(shooterStick.getRawAxis(5)) > .2)
+			if(Math.abs(shooterStick.getRawAxis(5)) > .1)
 			{
-				hookServo.setAngle(180);
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				if(shooterStick.getRawAxis(5) > 0)
+				{
+					hookServo.setAngle(180);
+					try {
+						Thread.sleep(250);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}				
 				power= (-.75)*(shooterStick.getRawAxis(5));
 			}
 			else

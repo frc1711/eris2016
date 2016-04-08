@@ -3,6 +3,7 @@ package org.usfirst.frc.team1711.robot;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.AnalogPotentiometer; 
 import edu.wpi.first.wpilibj.AnalogGyro; 
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,9 +16,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class Shooter 
 {
 	// potentiometer outputs for shooter position
-	double potHighest=0.300;
-	double potMidPoint=0.633;
-	double potLowest=0.685;
+	double potHighest=0.07;
+	double potLowest=0.482;
 	
 	Servo motorShooterKicker;
 	Servo motorCameraAngle;
@@ -98,7 +98,7 @@ public class Shooter
 	public void fireControl(Joystick shooterStick) {
 		
 		// look for a shoot request
-		if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot)<-0.5) {
+		if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot) > 0.5) {
 			// perform the following on a thread
 			// to allow the rest of the robot controls
 			// to be enabled
@@ -109,11 +109,11 @@ public class Shooter
 				    	double shootSpeed=0.8;		// shooting speed
 				    	motorShooterLeft.set(-initialSpeed);
 				    	motorShooterRight.set(-initialSpeed);
-				    	if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot)<-0.5) {
+				    	if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot) > 0.5) {
 					    	sleep(750); 				// wait half second to get up to speed
 					    	motorShooterLeft.set(-shootSpeed);
 					    	motorShooterRight.set(-shootSpeed);
-					    	if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot)<-0.5) {
+					    	if(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot) > 0.5) {
 						    	sleep(750);					// start to spin-up
 						    	motorShooterKicker.setAngle(0);	// SHOOT
 						    	// wait for ball release
@@ -132,7 +132,40 @@ public class Shooter
 		    thread.start();
 		}
 	}
-	
+public void shootControl(Joystick shooterStick) {
+		
+		// look for a shoot request
+		while(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot) > 0.5) {
+			// perform the following on a thread
+			// to allow the rest of the robot controls
+			// to be enabled
+			Thread thread = new Thread() {
+			    public void run() {			    
+			    	try {
+				    	double initialSpeed=0.3;	// initial wheel speed
+				    	double shootSpeed=0.8;		// shooting speed
+				    	motorShooterLeft.set(-initialSpeed);
+				    	motorShooterRight.set(-initialSpeed);
+					    	sleep(750); 				// wait half second to get up to speed
+					    	motorShooterLeft.set(-shootSpeed);
+					    	motorShooterRight.set(-shootSpeed);
+						    	sleep(750);					// start to spin-up
+						    	motorShooterKicker.setAngle(0);	// SHOOT
+						    	// wait for ball release
+						    	sleep(1000);
+					    
+						motorShooterKicker.setAngle(90);	// retract the kicker
+
+						// shut down the motors and disable fire control
+				    	motorShooterLeft.set(0);
+				    	motorShooterRight.set(0);
+						inFireMode=false;				
+				    } catch(InterruptedException ie) {}
+			    }
+			};
+		    thread.start();
+		}
+	}
 	public void cameraAngle (final Joystick shooterStick) 
 	//controls the angle and tilt of the camera mount
 	{
@@ -161,8 +194,10 @@ public class Shooter
 	{
 		if(shooterStick != null && motorShooterLeft != null && motorShooterRight != null && pot != null && motorShooterPitchLeft != null && motorShooterPitchRight != null)
 		{
+			System.out.println(pot.get());
 			while(shooterStick.getRawButton(1)) {
 		    	double collectorSpeed=0.5;	//  wheel speed
+		    	System.out.println(pot.get());
 
 		    	// disable the fire mode
 	    		inFireMode=false;
@@ -173,7 +208,7 @@ public class Shooter
 	    		motorShooterRight.set(collectorSpeed);
 	    		
 	    		// move the shooter down to collect level
-		    	if(pot.get()<potLowest) {
+		    	if(pot.get() < potLowest) {
 		    		motorShooterPitchLeft.set(-1);
 		    		motorShooterPitchRight.set(-1);
 		    	}
@@ -191,12 +226,14 @@ public class Shooter
 			    	Thread thread = new Thread() {
 					    public void run() {			    
 					    	// move the pitch to mid level
-					    	while(pot.get()>potMidPoint) {
+					    	while(pot.get()> .4) {
 					    		motorShooterPitchLeft.set(1);
 					    		motorShooterPitchRight.set(1);
 					    	}
+					    	
 					    	motorShooterPitchLeft.set(0);
 					    	motorShooterPitchRight.set(0);
+					    	
 					    }
 					};
 				    thread.start();
@@ -226,6 +263,23 @@ public class Shooter
 		thread.start();
 	}
 	
+	public void lowerPitchTime()
+	{
+		Thread thread = new Thread() 
+		{
+			public void run() 
+			{	
+				motorShooterPitchLeft.set(-1);
+				motorShooterPitchLeft.set(-1);
+				
+				Timer.delay(1000);
+				
+				motorShooterPitchLeft.set(0);
+				motorShooterPitchLeft.set(0);
+			}
+		};
+		thread.start();
+	}
 	public void lowerPitch ()
 	//this method lowers the pitch to the min value
 	//did not use the != null here, because if the shooter comes off, we won't use it in auton obviously
@@ -234,7 +288,7 @@ public class Shooter
 		{
 			public void run() 
 			{					
-				while(pot.get()<.640) // tested value for bottommost
+				while(pot.get()<potLowest) // tested value for bottommost
 				{				
 					motorShooterPitchLeft.set(-1);
 					motorShooterPitchRight.set(-1);
@@ -258,7 +312,7 @@ public class Shooter
 			public void run() 
 			{
 				//if the shooter is too low, raise it
-				while(pot.get() > potValue) 
+				while(pot.get() < potValue) 
 				{
 					motorShooterPitchLeft.set(-1);
 					motorShooterPitchRight.set(-1);
@@ -289,6 +343,7 @@ public class Shooter
 	{
 		if(pot!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null) 
 		{
+			
 			if(pot.get()<potHighest) {			// tested value for topmost
 				motorShooterPitchLeft.set(0);
 				motorShooterPitchRight.set(0);// upper limit hit, stop move
@@ -304,8 +359,19 @@ public class Shooter
 				atMax = false;
 				System.out.println("At min");
 			}		
+		} 
+/*		while(Math.abs(shooterStick.getRawAxis(1)) > .2)
+		{
+		//	while((pot.get() < potLowest) && (pot.get() > potHighest))
+		//	{
+				motorShooterPitchLeft.set(-(shooterStick.getRawAxis(1)));
+				motorShooterPitchRight.set(-(shooterStick.getRawAxis(1)));
+		//	}
+			
+			motorShooterPitchLeft.set(0);
+			motorShooterPitchRight.set(0);
 		}
-	
+		} */
 		
 		while(Math.abs(shooterStick.getRawAxis(1)) > .2)
 		{
@@ -315,7 +381,8 @@ public class Shooter
 		
 			motorShooterPitchLeft.set(0);
 			motorShooterPitchRight.set(0);
-	}
+		} 
+	
 	
 	public void shooterTrack() //Correction should be set in RobotMap
 	{
@@ -327,6 +394,11 @@ public class Shooter
 			double potAngle = pot.get();
 			tiltServo.set(potAngle*3.003+RobotMap.shooterServoCorrection);
 		}
+	}
+	
+	public void cameraMove(Joystick shooterStick)
+	{
+		tiltServo.set(60);
 	}
 	
 	//shoots the ball in autonomous

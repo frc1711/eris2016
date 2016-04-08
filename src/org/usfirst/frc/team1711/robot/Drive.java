@@ -247,6 +247,11 @@ public class Drive {
 			gyroFlat.calibrate();
 		}
 	}
+	
+	public void gyroTest()
+	{
+		System.out.println(gyroFlat.getAngle());
+	}
 	public void driveGyro(double distance)
 	//call continuously during auton 
 	{
