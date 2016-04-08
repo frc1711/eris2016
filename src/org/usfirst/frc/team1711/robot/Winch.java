@@ -47,7 +47,7 @@ public class Winch {
 				{
 					hookServo.setAngle(180);
 					try {
-						Thread.sleep(250);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -74,14 +74,14 @@ public class Robot extends SampleRobot
     	winch.init();
         
         
-        if(RobotMap.visionSystemEnable != -1)
+/*        if(RobotMap.visionSystemEnable != -1)
         {
         	// create the vision system which executes on its own 
             // thread
             vision = new VisionSystem2();
         	//Initialize the vision system *NEEDS WORK*
             vision.init();
-        }
+        } */
         drive.gyroInit();
     }
     
@@ -216,7 +216,7 @@ public class Robot extends SampleRobot
     			{
     				if(RobotMap.visionSystemEnable != -1)
     				{
-        				vision.vision();
+//        				vision.vision();
     				}
     			}
     		}
@@ -232,9 +232,9 @@ public class Robot extends SampleRobot
 	    	shooter.pitchControl(shooterStick);
 			shooter.shootControl(shooterStick);
 	    	shooter.collectorControl(shooterStick);
-	    	shooter.cameraAngle(shooterStick);
-	    	shooter.shooterTrack();
-	    	shooter.cameraMove(shooterStick);
+//	    	shooter.cameraAngle(shooterStick);
+//	    	shooter.shooterTrack();
+//	    	shooter.cameraMove(shooterStick);
 	    	
 	    	
 	    	// manual winch operations

@@ -138,21 +138,19 @@ public void shootControl(Joystick shooterStick) {
 		while(shooterStick.getRawAxis(RobotMap.shooterStickBtnShoot) > 0.5) {
 			// perform the following on a thread
 			// to allow the rest of the robot controls
-			// to be enabled
-			Thread thread = new Thread() {
-			    public void run() {			    
+			// to be enabled		    
 			    	try {
 				    	double initialSpeed=0.3;	// initial wheel speed
 				    	double shootSpeed=0.8;		// shooting speed
 				    	motorShooterLeft.set(-initialSpeed);
 				    	motorShooterRight.set(-initialSpeed);
-					    	sleep(750); 				// wait half second to get up to speed
+					    	Thread.sleep(750); 				// wait half second to get up to speed
 					    	motorShooterLeft.set(-shootSpeed);
 					    	motorShooterRight.set(-shootSpeed);
-						    	sleep(750);					// start to spin-up
+						    	Thread.sleep(750);					// start to spin-up
 						    	motorShooterKicker.setAngle(0);	// SHOOT
 						    	// wait for ball release
-						    	sleep(1000);
+						    	Thread.sleep(1000);
 					    
 						motorShooterKicker.setAngle(90);	// retract the kicker
 
@@ -161,9 +159,7 @@ public void shootControl(Joystick shooterStick) {
 				    	motorShooterRight.set(0);
 						inFireMode=false;				
 				    } catch(InterruptedException ie) {}
-			    }
-			};
-		    thread.start();
+			
 		}
 	}
 	public void cameraAngle (final Joystick shooterStick) 
@@ -194,10 +190,9 @@ public void shootControl(Joystick shooterStick) {
 	{
 		if(shooterStick != null && motorShooterLeft != null && motorShooterRight != null && pot != null && motorShooterPitchLeft != null && motorShooterPitchRight != null)
 		{
-			System.out.println(pot.get());
+			//System.out.println(pot.get());
 			while(shooterStick.getRawButton(1)) {
 		    	double collectorSpeed=0.5;	//  wheel speed
-		    	System.out.println(pot.get());
 
 		    	// disable the fire mode
 	    		inFireMode=false;
@@ -349,7 +344,7 @@ public void shootControl(Joystick shooterStick) {
 				motorShooterPitchRight.set(0);// upper limit hit, stop move
 				atMax=true;
 				atMin = false;
-				System.out.println("At max");
+		//		System.out.println("At max");
 				
 			}
 			if(pot.get()>potLowest) {			// tested value for bottommost
@@ -357,7 +352,7 @@ public void shootControl(Joystick shooterStick) {
 				motorShooterPitchRight.set(0); // lower limit hit, stop move
 				atMin=true;
 				atMax = false;
-				System.out.println("At min");
+		//		System.out.println("At min");
 			}		
 		} 
 /*		while(Math.abs(shooterStick.getRawAxis(1)) > .2)
@@ -383,6 +378,43 @@ public void shootControl(Joystick shooterStick) {
 			motorShooterPitchRight.set(0);
 		} 
 	
+	public void shooterPitch(Joystick shooterStick)
+	{
+		if(pot!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null) 
+		{
+			while(Math.abs(shooterStick.getRawAxis(1)) > .2)				
+			{
+				while((pot.get() < potLowest))
+				{
+					while(shooterStick.getRawAxis(1) > 0)
+					{
+						motorShooterPitchLeft.set(-(Math.abs(shooterStick.getRawAxis(1))));
+						motorShooterPitchRight.set(-(Math.abs(shooterStick.getRawAxis(1))));
+					}
+				}
+				while(pot.get() > potHighest)
+				{
+					while(shooterStick.getRawAxis(1) < 0)
+					{
+						motorShooterPitchLeft.set(-(-1*(Math.abs(shooterStick.getRawAxis(1)))));
+						motorShooterPitchRight.set(-(-1*(Math.abs(shooterStick.getRawAxis(1)))));
+					}
+				}
+				motorShooterPitchLeft.set(0);
+				motorShooterPitchRight.set(0);
+			}
+			if(pot.get() < potHighest)
+			{
+				atMax = true;
+				atMin = false;
+			}
+			if(pot.get() > potLowest)
+			{
+				atMax = false;
+				atMin = true;
+			}
+		}
+	}
 	
 	public void shooterTrack() //Correction should be set in RobotMap
 	{

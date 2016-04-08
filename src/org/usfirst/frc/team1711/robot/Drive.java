@@ -107,8 +107,8 @@ public class Drive {
 	{
 		if(driveStick.getRawButton(RobotMap.driveStickBtnSlow))
 		{
-			motorDriveLeftMaster.set(0.5*(-(driveStick.getY()-driveStick.getX())));
-			motorDriveRightMaster.set(0.5*(-(driveStick.getY()+driveStick.getX())));
+			motorDriveLeftMaster.set(0.8*(-(driveStick.getY()-driveStick.getX())));
+			motorDriveRightMaster.set(0.8*(-(driveStick.getY()+driveStick.getX())));
 
 	        Timer.delay(0.005);		// wait for a motor update time
 		}
