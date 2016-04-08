@@ -29,8 +29,8 @@ public class Drive {
 	
 	//creating gyro
 	AnalogGyro gyroFlat;
-	PIDController PIDLeft;
-	PIDController PIDRight;
+//	PIDController PIDLeft;
+//	PIDController PIDRight;
 	
 	//creating joystick
 	Joystick driveStick = new Joystick(RobotMap.joystick0);
@@ -43,8 +43,8 @@ public class Drive {
 		double Ki = 0;
 		double Kd = 0;
 		
-		PIDController PIDLeft = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveLeftMaster);
-		PIDController PIDRight = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveRightMaster);
+//		PIDController PIDLeft = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveLeftMaster);
+//		PIDController PIDRight = new PIDController(Kp, Ki, Kd, gyroFlat, motorDriveRightMaster);
 		
 		//creating master objects
 		motorDriveLeftMaster = new CANTalon(RobotMap.motorDriveLeftMasterId);
@@ -283,8 +283,8 @@ public class Drive {
 		}				
 		while(gyroMode == true)
 		{
-			PIDLeft.enable();
-			PIDRight.enable();
+//			PIDLeft.enable();
+//			PIDRight.enable();
 			
 			targetRotation = driveStick.getX();
 			targetDirection = driveStick.getDirectionDegrees();
@@ -297,8 +297,11 @@ public class Drive {
 			//set the power proportional to the direction and magnitude
 			//set the right and left wheels to turn based on this proportion
 			//what should the setpoint be?????????
+			//this maybe??
+			//idk what I'm doing here I'll work with it later
+//			PIDLeft.setSetpoint(targetDirection);
+//			PIDRight.setSetpoint(targetDirection);
 			
-			//PIDLeft.setSetpoint();
 		}
 	}
 	

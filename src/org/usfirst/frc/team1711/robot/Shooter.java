@@ -161,7 +161,7 @@ public class Shooter
 	{
 		if(shooterStick != null && motorShooterLeft != null && motorShooterRight != null && pot != null && motorShooterPitchLeft != null && motorShooterPitchRight != null)
 		{
-			if(shooterStick.getRawButton(RobotMap.shooterStickBtnShooterCollect)) {
+			while(shooterStick.getRawButton(1)) {
 		    	double collectorSpeed=0.5;	//  wheel speed
 
 		    	// disable the fire mode
@@ -182,7 +182,6 @@ public class Shooter
 		    		motorShooterPitchRight.set(0);
 		    	}
 			}
-			else {
 				// if was in collect mode then switch off wheels and lift 
 				// shooter to mid point. Thread the operation to not affect
 				// machine performance
@@ -203,9 +202,7 @@ public class Shooter
 				    thread.start();
 				    inCollectMode=false;
 				}		
-			}
-		}
-		
+			}	
 	}
 	public void liftPitch ()
 	//this method raises the pitch to the max value
@@ -308,14 +305,12 @@ public class Shooter
 				System.out.println("At min");
 			}		
 		}
-		
-		System.out.println("right " + motorShooterPitchRight.get());
-		System.out.println("left " + motorShooterPitchLeft.get());
+	
 		
 		while(Math.abs(shooterStick.getRawAxis(1)) > .2)
 		{
-			motorShooterPitchLeft.set(shooterStick.getRawAxis(1));
-			motorShooterPitchRight.set(shooterStick.getRawAxis(1));
+			motorShooterPitchLeft.set(-(shooterStick.getRawAxis(1)));
+			motorShooterPitchRight.set(-(shooterStick.getRawAxis(1)));
 		}
 		
 			motorShooterPitchLeft.set(0);
