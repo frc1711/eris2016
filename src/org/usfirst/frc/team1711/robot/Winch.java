@@ -40,19 +40,13 @@ public class Winch {
 		// can only use the winch when the left hand trigger is pressed
 		if(shooterStick.getRawAxis(2)>0.8) {
 			
+			if(shooterStick.getRawButton(5))
+			{
+				hookServo.setAngle(180);
+			}			
 			// get the current position of the winch stick
 			if(Math.abs(shooterStick.getRawAxis(5)) > .1)
-			{
-				if(shooterStick.getRawAxis(5) > 0)
-				{
-					hookServo.setAngle(180);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}				
+			{				
 				power= (-.75)*(shooterStick.getRawAxis(5));
 			}
 			else

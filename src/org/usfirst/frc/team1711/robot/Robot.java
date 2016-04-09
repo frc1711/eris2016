@@ -221,10 +221,8 @@ public class Robot extends SampleRobot
     			}
     		}
     	};
-    	thread.start(); 
+//    	thread.start(); 
     
-    	while (isOperatorControl() && isEnabled()) {
-
     	//Main operator control loop
         while (isOperatorControl() && isEnabled()) 
         {
@@ -246,7 +244,6 @@ public class Robot extends SampleRobot
         //Stops motors and vision loop when robot is disabled
         isDone = true;
         drive.stopMotors();
-    	}
     }
     	
     public void testPeriodic() 
