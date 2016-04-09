@@ -382,36 +382,31 @@ public void shootControl(Joystick shooterStick) {
 	{
 		if(pot!=null && motorShooterPitchLeft!=null && motorShooterPitchRight!=null) 
 		{
-			while(Math.abs(shooterStick.getRawAxis(1)) > .2)				
+			//while the joystick is being moved, read the value and set it as the power
+			//if the pot value is higher than or equal to pot lowest, only allow upward motion
+			//if the pot value is lower than or equal to pot highest, only allow downward motion
+			while(Math.abs(shooterStick.getRawAxis(1)) > .2)
 			{
-				while((pot.get() < potLowest))
+				if(shooterStick.getRawAxis(1) > 0)
 				{
-					while(shooterStick.getRawAxis(1) > 0)
+					while(pot.get() > potLowest)
 					{
-						motorShooterPitchLeft.set(-(Math.abs(shooterStick.getRawAxis(1))));
-						motorShooterPitchRight.set(-(Math.abs(shooterStick.getRawAxis(1))));
+						motorShooterPitchLeft.set(1);
+						motorShooterPitchRight.set(1);
 					}
+					motorShooterPitchLeft.set(0);
+					motorShooterPitchRight.set(0);
 				}
-				while(pot.get() > potHighest)
+				if(shooterStick.getRawAxis(1) < 0)
 				{
-					while(shooterStick.getRawAxis(1) < 0)
+					while(pot.get() < potHighest)
 					{
-						motorShooterPitchLeft.set(-(-1*(Math.abs(shooterStick.getRawAxis(1)))));
-						motorShooterPitchRight.set(-(-1*(Math.abs(shooterStick.getRawAxis(1)))));
+						motorShooterPitchLeft.set(1);
+						motorShooterPitchRight.set(1);
 					}
+					motorShooterPitchLeft.set(0);
+					motorShooterPitchRight.set(0);
 				}
-				motorShooterPitchLeft.set(0);
-				motorShooterPitchRight.set(0);
-			}
-			if(pot.get() < potHighest)
-			{
-				atMax = true;
-				atMin = false;
-			}
-			if(pot.get() > potLowest)
-			{
-				atMax = false;
-				atMin = true;
 			}
 		}
 	}
