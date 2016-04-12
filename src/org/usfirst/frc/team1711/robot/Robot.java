@@ -74,14 +74,14 @@ public class Robot extends SampleRobot
     	winch.init();
         
         
-/*        if(RobotMap.visionSystemEnable != -1)
+        if(RobotMap.visionSystemEnable != -1)
         {
         	// create the vision system which executes on its own 
             // thread
             vision = new VisionSystem2();
         	//Initialize the vision system *NEEDS WORK*
             vision.init();
-        } */
+        } 
         drive.gyroInit();
     }
     
@@ -101,10 +101,10 @@ public class Robot extends SampleRobot
 
     public void autonomous() 
     {	
-    	if(autonSwitch.get() == true)
-    	{
+//    	if(autonSwitch.get() == true)
+ //   	{
     		
-    		/*
+    		
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
 	    	
@@ -120,7 +120,7 @@ public class Robot extends SampleRobot
 	    	} 
 	    	
 	    	//Lower the shooter, wait for 1 second, then start moving
-	    	shooter.lowerPitch();
+/*	    	shooter.lowerPitch();
 	    	try
 	    	{
 	    		Thread.sleep(1000);
@@ -128,14 +128,14 @@ public class Robot extends SampleRobot
 	    	catch (InterruptedException e) 
 	    	{
 				e.printStackTrace();
-			}
+			} */
 	    	
 	    	//Drive the robot forward, which includes a timer
-	    	 * 
-	    	 */
+	    	 
+	    	 
     		
     		//Lower the shooter, wait for 1 second, then start moving
-	    	shooter.lowerPitch();
+/*	    	shooter.lowerPitch();
 	    	try
 	    	{
 	    		Thread.sleep(1000);
@@ -145,13 +145,13 @@ public class Robot extends SampleRobot
 				e.printStackTrace();
 			}
     		autonPower = RobotMap.autonHighPowerLevel;
-	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);   	
-    	}
+	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);   	*/
+//    	} 
     	
-    	if(autonSwitch.get() == false)
-    	{
+//    	if(autonSwitch.get() == false)
+//    	{
     		
-    		/*
+    		
     		//Sets a default power level thats defined in RobotMap
 	    	autonPower = RobotMap.autonDefaultPowerLevel;
 	    	
@@ -178,17 +178,17 @@ public class Robot extends SampleRobot
 			}
 	    	
 	    	//Drive the robot forward, which includes a timer
-	    	drive.driveForward(autonPower, (RobotMap.autonRunTime) - .5, RobotMap.autonLeftBias, RobotMap.autonRightBias); 
+//	    	drive.driveForward(autonPower, (RobotMap.autonRunTime) - .5, RobotMap.autonLeftBias, RobotMap.autonRightBias); 
 	    	//turn the robot
-	    	drive.driveAngle(45, .5);
+//	    	drive.driveAngle(45, .5);
 	    	//aim the shooter
-	    	shooter.partialLift(.660);
+//	    	shooter.partialLift(.660);
 	    	//shoot the ball
-	    	shooter.shoot();
+//	    	shooter.shoot();
 	    	
-	    	*/
+	    	
     		
-    		//Lower the shooter, wait for 1 second, then start moving
+/*    		//Lower the shooter, wait for 1 second, then start moving
 	    	shooter.lowerPitch();
 	    	try
 	    	{
@@ -197,10 +197,10 @@ public class Robot extends SampleRobot
 	    	catch (InterruptedException e)
 	    	{
 				e.printStackTrace();
-			}
-    		autonPower = RobotMap.autonLowPowerLevel;
-	    	drive.driveForward(autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);  
-    	}
+			} */
+//    		autonPower = RobotMap.autonLowPowerLevel;
+	    	drive.driveForward(-autonPower, RobotMap.autonRunTime, RobotMap.autonLeftBias, RobotMap.autonRightBias);  
+    //	}
     }  
 
     public void operatorControl() 
@@ -227,7 +227,7 @@ public class Robot extends SampleRobot
         while (isOperatorControl() && isEnabled()) 
         {
         	// manual shooter operations
-	    	shooter.pitchControl(shooterStick);
+	    	shooter.shooterPitch(shooterStick);
 			shooter.shootControl(shooterStick);
 	    	shooter.collectorControl(shooterStick);
 //	    	shooter.cameraAngle(shooterStick);

@@ -54,9 +54,7 @@ public class RobotMap
 	public static final int gyroFlat = 1;
 	
 	//Vision buttons
-	public static final int cameraCenterViewButton = 10;
-	public static final int cameraAngleLeftButton = 8;
-	public static final int cameraAngleRightButton = 9;
+	
 	
 	//Vision camera inputs
 	public static final int motorCameraAngle = 5;
@@ -84,7 +82,7 @@ public class RobotMap
 	public static final double autonDefaultPowerLevel = -.65;
 	public static final double autonHighPowerLevel = -.8;
 	public static final double autonLowPowerLevel = -.55;
-	public static final double autonRunTime = 3;
+	public static final double autonRunTime = 2.5;
 	
 	//vision system enable
 	public static final int visionSystemEnable = -1;

@@ -167,22 +167,7 @@ public void shootControl(Joystick shooterStick) {
 	{
 		if(shooterStick != null && motorCameraAngle != null)
 		{
-			double servoAngle = motorCameraAngle.getAngle();
 			
-			//angles the camera right
-			if (shooterStick.getRawButton(RobotMap.cameraAngleRightButton)) {
-				motorCameraAngle.setAngle(servoAngle - 1);		
-			}
-					
-			//angles the camera left
-			if (shooterStick.getRawButton(RobotMap.cameraAngleLeftButton)) {
-				motorCameraAngle.setAngle(servoAngle + 1);
-			}
-			
-			//centers the camera in the x-y direction
-			if (shooterStick.getRawButton(RobotMap.cameraCenterViewButton)) {
-				motorCameraAngle.setAngle(90);
-			}
 		}
 	}
 	public void collectorControl(Joystick shooterStick) 
@@ -191,7 +176,7 @@ public void shootControl(Joystick shooterStick) {
 		if(shooterStick != null && motorShooterLeft != null && motorShooterRight != null && pot != null && motorShooterPitchLeft != null && motorShooterPitchRight != null)
 		{
 			//System.out.println(pot.get());
-			while(shooterStick.getRawButton(1)) {
+			if(shooterStick.getRawButton(1)) {
 		    	double collectorSpeed=0.5;	//  wheel speed
 
 		    	// disable the fire mode
@@ -212,6 +197,7 @@ public void shootControl(Joystick shooterStick) {
 		    		motorShooterPitchRight.set(0);
 		    	}
 			}
+			else {
 				// if was in collect mode then switch off wheels and lift 
 				// shooter to mid point. Thread the operation to not affect
 				// machine performance
@@ -235,6 +221,7 @@ public void shootControl(Joystick shooterStick) {
 				    inCollectMode=false;
 				}		
 			}	
+		}
 	}
 	public void liftPitch ()
 	//this method raises the pitch to the max value
@@ -385,28 +372,42 @@ public void shootControl(Joystick shooterStick) {
 			//while the joystick is being moved, read the value and set it as the power
 			//if the pot value is higher than or equal to pot lowest, only allow upward motion
 			//if the pot value is lower than or equal to pot highest, only allow downward motion
-			while(Math.abs(shooterStick.getRawAxis(1)) > .2)
+			if(Math.abs(shooterStick.getRawAxis(1)) > .2)
 			{
+				System.out.println("left PWM " + motorShooterPitchLeft.get());
+				
 				if(shooterStick.getRawAxis(1) > 0)
 				{
-					while(pot.get() > potLowest)
+					if(pot.get() < potLowest)
 					{
-						motorShooterPitchLeft.set(1);
-						motorShooterPitchRight.set(1);
+						motorShooterPitchLeft.set(-1);
+						motorShooterPitchRight.set(-1);
 					}
-					motorShooterPitchLeft.set(0);
-					motorShooterPitchRight.set(0);
+					
+					else
+					{
+						motorShooterPitchLeft.set(0);
+						motorShooterPitchRight.set(0);
+					}
 				}
 				if(shooterStick.getRawAxis(1) < 0)
 				{
-					while(pot.get() < potHighest)
+					if(pot.get() > potHighest)
 					{
 						motorShooterPitchLeft.set(1);
 						motorShooterPitchRight.set(1);
 					}
-					motorShooterPitchLeft.set(0);
-					motorShooterPitchRight.set(0);
-				}
+					else
+					{
+						motorShooterPitchLeft.set(0);
+						motorShooterPitchRight.set(0);	
+					}										
+				}			
+			}
+			else
+			{
+				motorShooterPitchLeft.set(0);
+				motorShooterPitchRight.set(0);	
 			}
 		}
 	}

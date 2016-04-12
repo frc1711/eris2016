@@ -53,7 +53,7 @@ public class VisionSystem2
 		CameraServer.getInstance().setImage(frame);
 	}
 		
-	public void shooterAngle(Joystick shooterStick)
+/*	public void shooterAngle(Joystick shooterStick)
 	{
 		//Sets the current servo angle for subsequent adjustments
 		double servoAngle = angleServo.getAngle();
@@ -75,7 +75,7 @@ public class VisionSystem2
 		{
 			angleServo.setAngle(90);
 		}
-	}
+	} */
 		
 
 	public void throttleTilt(Joystick shooterStick)
